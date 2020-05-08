@@ -9,13 +9,13 @@ setup(
     author="Nick Satterly",
     author_email="nick.satterly@theguardian.com",
     url="http://github.com/burakksglu/alerta-contrib",
-    py_modules=['imap'],
+    py_modules=['imapcheck'],
     install_requires=[
         'alerta'
     ],
     entry_points={
         'console_scripts': [
-            'alerta-imap = imap:main'
+            'alerta-imap = imapcheck:main'
         ]
     },
     keywords="alerta imap daemon",
