@@ -11,7 +11,8 @@ setup(
     url="http://github.com/burakksglu/alerta-contrib",
     py_modules=['imapcheck'],
     install_requires=[
-        'alerta'
+        'alerta',
+        'yaml'
     ],
     entry_points={
         'console_scripts': [
