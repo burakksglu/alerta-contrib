@@ -8,11 +8,10 @@ setup(
     license="MIT",
     author="Nick Satterly",
     author_email="nick.satterly@theguardian.com",
-    url="http://github.com/alerta/alerta-contrib",
-    py_modules=['pinger'],
+    url="http://github.com/burakksglu/alerta-contrib",
+    py_modules=['imap'],
     install_requires=[
-        'alerta',
-        'PyYaml'
+        'alerta'
     ],
     entry_points={
         'console_scripts': [
@@ -25,7 +24,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: System Administrators',
         'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.7',
         'Topic :: System :: Monitoring',
     ]
 )
