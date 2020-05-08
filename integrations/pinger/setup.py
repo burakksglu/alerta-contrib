@@ -2,9 +2,9 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="alerta-pinger",
-    version='3.3.0',
-    description="Alerta Pinger daemon",
+    name="alerta-imap",
+    version='1.0.0',
+    description="Alerta Imap daemon",
     license="MIT",
     author="Nick Satterly",
     author_email="nick.satterly@theguardian.com",
@@ -16,10 +16,10 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'alerta-pinger = pinger:main'
+            'alerta-imap = imap:main'
         ]
     },
-    keywords="alerta ping daemon",
+    keywords="alerta imap daemon",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
