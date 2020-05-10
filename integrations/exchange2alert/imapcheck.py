@@ -112,14 +112,14 @@ class ImapDaemon(object):
                         host = os.getenv("IMAP_HOST", "value does not exist") 
                         LOG.info(host)
                     except:          
-                        print ("IMAP_HOST: " + value)
+                        print ("IMAP_HOST: " + host)
                         break
                     # Retrieve IMAP username - halt script if section 'imap' or value missing
                     try:
                         username = os.getenv("IMAP_USERNAME", "value does not exist") 
                         LOG.info(username)
                     except:                 
-                        print ("IMAP_USERNAME: " + value)
+                        print ("IMAP_USERNAME: " + username)
                         break
                     
                     # Retrieve IMAP password - halt script if missing
@@ -127,15 +127,19 @@ class ImapDaemon(object):
                         password = os.getenv("IMAP_PASSWORD", "value does not exist") 
                         LOG.info(password)
                     except:            
-                        print ("IMAP_PASS: " + value)
+                        print ("IMAP_PASS: " + password)
                         break
                     
                     # Retrieve IMAP SSL setting - warn if missing, halt if not boolean
                     try:
-                        ssl = os.getenv("IMAP_SSL", "value does not exist") 
+                        env_ssl = os.getenv("IMAP_SSL", "value does not exist")
+                        if "True" in env_ssl:
+                            ssl = True
+                        else:
+                            ssl = False
                         LOG.info(ssl)
                     except:              
-                        print ("IMAP_SSL: " + value)
+                        print ("IMAP_SSL: " + ssl)
                         break
                     
                     # Retrieve IMAP folder to monitor - warn if missing
@@ -143,7 +147,7 @@ class ImapDaemon(object):
                         folder = os.getenv("IMAP_FOLDER", "value does not exist") 
                         LOG.info(folder)
                     except:                 
-                        print ("IMAP_FOLDER: " + value)
+                        print ("IMAP_FOLDER: " + folder)
                         break
                         
                     while True:
