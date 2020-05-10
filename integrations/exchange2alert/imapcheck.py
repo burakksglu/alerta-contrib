@@ -1,13 +1,9 @@
 import traceback
 import sys
-import platform
 import time
-import subprocess
 import threading
 import queue as Queue
-import re
 import logging as LOGging
-import yaml
 import os
 from time import sleep
 from alertaclient.api import Client
@@ -115,22 +111,22 @@ class ImapDaemon(object):
                     try:
                         host = os.getenv("IMAP_HOST", "value does not exist") 
                         LOG.info(host)
-                    except                  
+                    except:          
                         print ("IMAP_HOST: " + value)
                         break
                     # Retrieve IMAP username - halt script if section 'imap' or value missing
                     try:
                         username = os.getenv("IMAP_USERNAME", "value does not exist") 
                         LOG.info(username)
-                    except                  
+                    except:                 
                         print ("IMAP_USERNAME: " + value)
                         break
                     
                     # Retrieve IMAP password - halt script if missing
-                   try:
+                    try:
                         password = os.getenv("IMAP_PASSWORD", "value does not exist") 
                         LOG.info(password)
-                    except                  
+                    except:            
                         print ("IMAP_PASS: " + value)
                         break
                     
@@ -138,7 +134,7 @@ class ImapDaemon(object):
                     try:
                         ssl = os.getenv("IMAP_SSL", "value does not exist") 
                         LOG.info(ssl)
-                    except                  
+                    except:              
                         print ("IMAP_SSL: " + value)
                         break
                     
@@ -146,7 +142,7 @@ class ImapDaemon(object):
                     try:
                         folder = os.getenv("IMAP_FOLDER", "value does not exist") 
                         LOG.info(folder)
-                    except                  
+                    except:                 
                         print ("IMAP_FOLDER: " + value)
                         break
                         
