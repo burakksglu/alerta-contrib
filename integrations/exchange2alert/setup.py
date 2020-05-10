@@ -12,7 +12,7 @@ setup(
     py_modules=['imapcheck'],
     install_requires=[
         'alerta',
-        'yaml'
+        'PyYaml'
     ],
     entry_points={
         'console_scripts': [
