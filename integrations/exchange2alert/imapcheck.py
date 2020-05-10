@@ -34,7 +34,7 @@ def get_email_content(body):
 		item["%s" % "Subject".upper()] = body['Subject'][:255]
 		item["%s" % "Date".upper()] = body['Date'][:255]
 		for part in body.walk():
-			if (part.get_content_type() == 'text/plain') and (part.get('Content-Disposition') is None):
+			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
 				item["%s" % "Body".upper()] = part.get_payload()
 				
 				return item
@@ -93,7 +93,7 @@ class ImapDaemon(object):
         # Create internal queue
         self.queue = Queue.Queue()
 
-        self.api = Client()
+        self.api = Client('http://localhost:8080/api')
 
         # Start worker threads
         LOG.debug('Starting %s worker threads...', SERVER_THREAD_COUNT)
@@ -111,52 +111,43 @@ class ImapDaemon(object):
                 while True:
                 # <--- Start of configuration section
             
-                # Retrieve IMAP host - halt script if section 'imap' or value missing
+                    # Retrieve IMAP host - halt script if section 'imap' or value missing
                     try:
-                        host = "10.34.0.33"
+                        host = os.getenv("IMAP_HOST", "value does not exist") 
                         LOG.info(host)
-                    except configparser.NoSectionError:
-                        LOG.critical('no "imap" section in configuration file')
+                    except                  
+                        print ("IMAP_HOST: " + value)
                         break
-                    except configparser.NoOptionError:
-                        LOG.critical('no IMAP host specified in configuration file')
-                        break
-                    
-                    # Retrieve IMAP username - halt script if missing
+                    # Retrieve IMAP username - halt script if section 'imap' or value missing
                     try:
-                        username = "imaptest@clonera.net"
+                        username = os.getenv("IMAP_USERNAME", "value does not exist") 
                         LOG.info(username)
-                    except configparser.NoOptionError:
-                        LOG.critical('no IMAP username specified in configuration file')
+                    except                  
+                        print ("IMAP_USERNAME: " + value)
                         break
                     
                     # Retrieve IMAP password - halt script if missing
-                    try:
-                        password = "Password1"
+                   try:
+                        password = os.getenv("IMAP_PASSWORD", "value does not exist") 
                         LOG.info(password)
-                    except configparser.NoOptionError:
-                        LOG.critical('no IMAP password specified in configuration file')
+                    except                  
+                        print ("IMAP_PASS: " + value)
                         break
                     
                     # Retrieve IMAP SSL setting - warn if missing, halt if not boolean
                     try:
-                        ssl = False
+                        ssl = os.getenv("IMAP_SSL", "value does not exist") 
                         LOG.info(ssl)
-                    except configparser.NoOptionError:
-                        # Default SSL setting to False if missing
-                        LOG.warning('no IMAP SSL setting specified in configuration file')
-                        ssl = False
-                    except ValueError:
-                        LOG.critical('IMAP SSL setting invalid - not boolean')
+                    except                  
+                        print ("IMAP_SSL: " + value)
                         break
                     
                     # Retrieve IMAP folder to monitor - warn if missing
                     try:
-                        folder = "INBOX"
-                    except configparser.NoOptionError:
-                        # Default folder to monitor to 'INBOX' if missing
-                        LOG.warning('no IMAP folder specified in configuration file')
-                        folder = 'INBOX'
+                        folder = os.getenv("IMAP_FOLDER", "value does not exist") 
+                        LOG.info(folder)
+                    except                  
+                        print ("IMAP_FOLDER: " + value)
                         break
                         
                     while True:
@@ -236,15 +227,13 @@ class ImapDaemon(object):
                                     ))
                                 try:
                                     self.api.send_alert(
-                                        resource=folder,
-                                        event="Mail",
-                                        correlate="_Mail_Alerts",
-                                        group=output['FROM'],
-                                        origin=folder,
-                                        severity="major",
-                                        environment="Production",
-                                        service="MailAlerter",
-                                        text=text,
+                                        resource=output['FROM'],
+                                        event='Mail',
+                                        origin='Inbox',
+                                        severity='major',
+                                        environment='Production',
+                                        service=['MailAlerter'],
+                                        text='Problem Mail: ' + output['BODY'],
                                         event_type='serviceAlert',
                                     )
                                 except Exception as e:
