@@ -181,7 +181,7 @@ class ImapDaemon(object):
                             logstr = 'failed to login to IMAP server - '
                             for each in estr:
                                 logstr += '{0}; '.format(each.strip('\n'))
-                            log.critical(logstr)
+                            LOG.critical(logstr)
                             break
                         
                         # Select IMAP folder to monitor
@@ -196,7 +196,7 @@ class ImapDaemon(object):
                             logstr = 'failed to select IMAP folder - '
                             for each in estr:
                                 logstr += '{0}; '.format(each.strip('\n'))
-                            log.critical(logstr)
+                            LOG.critical(logstr)
                             break
                         
                         # Retrieve and process all unread messages. Should errors occur due to loss of connection, attempt restablishing connection 
