@@ -235,7 +235,7 @@ class ImapDaemon(object):
                                         service=['MailAlerter'],
                                         text='Problem Mail: ' + output['SUBJECT'],
                                         event_type='mailAlert',
-                                        raw_data=output['BODY']
+                                        value=output['BODY']
                                     )
                                 except Exception as e:
                                     LOG.warning('Failed to send alert: %s', e)
