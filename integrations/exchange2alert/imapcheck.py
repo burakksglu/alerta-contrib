@@ -228,13 +228,14 @@ class ImapDaemon(object):
                                 try:
                                     self.api.send_alert(
                                         resource=output['FROM'],
-                                        event='Mail',
-                                        origin='Inbox',
+                                        event=output['SUBJECT'],
+                                        origin=folder,
                                         severity='major',
                                         environment='Production',
                                         service=['MailAlerter'],
-                                        text='Problem Mail: ' + output['BODY'],
-                                        event_type='serviceAlert',
+                                        text='Problem Mail: ' + output['SUBJECT'],
+                                        event_type='mailAlert',
+                                        raw_data=output['BODY']
                                     )
                                 except Exception as e:
                                     LOG.warning('Failed to send alert: %s', e)
