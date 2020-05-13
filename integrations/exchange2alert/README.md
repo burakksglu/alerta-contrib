@@ -1,7 +1,7 @@
-Pinger Integration
+IMAP Mailbox Check Integration
 ==================
 
-Monitor network availability using ICMP Ping and generate alerts on failures.
+Monitor exchange inbox availability using IMAP and generate alerts on unread mails.
 
 For help, join [![Gitter chat](https://badges.gitter.im/alerta/chat.png)](https://gitter.im/alerta/chat)
 
@@ -14,29 +14,18 @@ Clone the GitHub repo and run:
 
 Or, to install remotely from GitHub run:
 
-    $ pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=integrations/pinger
+    $ pip install git+https://github.com/burakksglu/alerta-contrib.git#subdirectory=integrations/exchange2alert
 
 Configuration
 -------------
 
-Add "ping targets" to `alerta-pinger.targets` in the following format:
+Add below listed environment variables to `alertad.cof` or export at start in the following format:
 
-```yaml
----
-- environment: Production
-  service: [Web]
-  targets:
-    - search.twitter.com
-    - www.nytimes.com
-    - www.google.com
-    - www.nyc.gov
-    - newyork.yankees.mlb.com
-```
-
-References
-----------
-
-  * RFC792 Internet Control Message Protocol: https://tools.ietf.org/html/rfc792
+ - IMAP_HOST
+ - IMAP_USERNAME
+ - IMAP_PASSWORD
+ - IMAP_FOLDER 
+ - IMAP_SSL = YES # For SSL Connection, is not necessary for no-ssl.
 
 License
 -------
