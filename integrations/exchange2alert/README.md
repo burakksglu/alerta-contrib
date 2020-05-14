@@ -21,7 +21,7 @@ Configuration
 To enable the script simply set `IMAP_CHECK=True` in environment or export it.
 
 
-Add below listed environment variables to `alertad.cof` or export at start in the following format:
+Add below listed environment variables to `alertad.conf` or export at start in the following format:
 
  - IMAP_HOST
  - IMAP_USERNAME
