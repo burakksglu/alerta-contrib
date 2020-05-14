@@ -271,8 +271,12 @@ class ImapDaemon(object):
 
 
 def main():
-	imap = ImapDaemon()
-	imap.run()
+	check = os.getenv("IMAP_CHECK", "imap check is not enabled") 
+	if "True" in check:
+		imap = ImapDaemon()
+		imap.run()
+	else:
+		LOG.critical("imap check is not enabled")
 
 if __name__ == '__main__':
 	main()
