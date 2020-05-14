@@ -18,6 +18,8 @@ Or, to install remotely from GitHub run:
 
 Configuration
 -------------
+To enable the script simply set `IMAP_CHECK=True` in environment or export it.
+
 
 Add below listed environment variables to `alertad.cof` or export at start in the following format:
 
