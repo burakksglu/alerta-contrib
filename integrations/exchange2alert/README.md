@@ -32,4 +32,4 @@ Add below listed environment variables to `alertad.conf` or export at start in t
 License
 -------
 
-Copyright (c) 2014-2016 Nick Satterly. Available under the MIT License.
+Copyright (c) 2020 Burak Köseoğlu. Available under the MIT License.

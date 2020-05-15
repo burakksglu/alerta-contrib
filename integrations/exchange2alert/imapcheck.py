@@ -14,6 +14,7 @@ import eventlet
 import email
 from unidecode import  unidecode
 from urllib.parse import unquote
+import base64
 
 __version__ = '1.0.0'
 
@@ -34,18 +35,40 @@ def decode_mime_words(s):
 		for word, encoding in email.header.decode_header(s))
 
 def get_email_content(body):
+	item = dict()
 	if body.is_multipart():
-		item = dict()
 		item["%s" % "From".upper()] = decode_mime_words(body['From'][:255])
 		item["%s" % "To".upper()] = decode_mime_words(body['To'][:255])
 		item["%s" % "Subject".upper()] = decode_mime_words(body['Subject'][:255])
 		item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
 		
 		for part in body.walk():
-			if (part.get_content_type() == 'text/plain') and (part.get('Content-Disposition') is None):
-				item["%s" % "Body".upper()] = str(part.get_payload())
-				item["%s" % "Body".upper()] = unidecode((item["%s" % "Body".upper()]))
-				return item
+			
+			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
+				if ('base64' in part.get('Content-Transfer-Encoding')):
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
+				else:
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = unidecode((item["%s" % "Body".upper()]))
+	
+	else:
+		item["%s" % "From".upper()] = decode_mime_words(body['From'][:255])
+		item["%s" % "To".upper()] = decode_mime_words(body['To'][:255])
+		item["%s" % "Subject".upper()] = decode_mime_words(body['Subject'][:255])
+		item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
+
+		for part in body.walk():
+			
+			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
+				if ('base64' in part.get('Content-Transfer-Encoding')):
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
+				else:
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = unidecode((item["%s" % "Body".upper()]))
+	
+	return item			
 
 class WorkerThread(threading.Thread):
 
@@ -224,11 +247,10 @@ class ImapDaemon(object):
 							mail_string = mail_string
 							mail_decoded = email.message_from_bytes(mail_string)
 							
-							# print(mail_decoded)
 							
 							try:
 								output = get_email_content(mail_decoded)
-								text = 'Problem Mail: ' + output['BODY']
+								text = 'Problem Mail: ' + output['SUBJECT']
 								LOG.info('processing email {0} - {1}'.format(
 									each, mail_decoded['subject']
 									))
@@ -242,7 +264,11 @@ class ImapDaemon(object):
 										service=['MailAlerter'],
 										text=text,
 										event_type='mailAlert',
+										attributes={
+											'html_body' : output['BODY']
+										} 
 									)
+									LOG.info('Alert sent to alerta: %s')
 								except Exception as e:
 									LOG.warning('Failed to send alert: %s', e)
 							except Exception:
