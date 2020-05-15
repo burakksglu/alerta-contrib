@@ -14,8 +14,7 @@ setup(
         'alerta',
         'eventlet',
         'imapclient',
-        'unidecode',
-        'base64'
+        'unidecode'
     ],
     entry_points={
         'console_scripts': [
