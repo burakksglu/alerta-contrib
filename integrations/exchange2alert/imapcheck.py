@@ -19,7 +19,7 @@ import base64
 __version__ = '1.0.0'
 
 LOG = LOGging.getLogger('alerta.imap')
-LOG.setLevel(LOGging.CRITICAL)
+LOG.setLevel(LOGging.ERROR)
 LOG.addHandler(LOGging.StreamHandler())
 
 
