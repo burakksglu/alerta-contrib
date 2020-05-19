@@ -6,16 +6,15 @@ setup(
     version='1.0.0',
     description="Alerta Imap daemon",
     license="MIT",
-    author="Nick Satterly",
-    author_email="nick.satterly@theguardian.com",
+    author="Burak Köseoğlu",
+    author_email="burakksglu@gmail.com",
     url="http://github.com/burakksglu/alerta-contrib",
     py_modules=['imapcheck'],
     install_requires=[
         'alerta',
         'eventlet',
         'imapclient',
-        'unidecode',
-        'base64'
+        'unidecode'
     ],
     entry_points={
         'console_scripts': [
@@ -24,7 +23,7 @@ setup(
     },
     keywords="alerta imap daemon",
     classifiers=[
-        'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Development/Stable',
         'License :: OSI Approved :: MIT License',
         'Intended Audience :: System Administrators',
         'Programming Language :: Python :: 2.6',
