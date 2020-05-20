@@ -17,14 +17,14 @@ from urllib.parse import unquote
 import base64
 
 __version__ = '1.0.0'
-
 LOG = LOGging.getLogger('alerta.imap')
 LOG.setLevel(LOGging.ERROR)
 LOG.addHandler(LOGging.StreamHandler())
 
 
-SERVER_THREAD_COUNT = 20
-LOOP_EVERY = 30
+
+SERVER_THREAD_COUNT = 5
+LOOP_EVERY = 30*60 #30 Minute loop
 
 imapclient = eventlet.import_patched('imapclient')
 
@@ -186,7 +186,7 @@ class ImapDaemon(object):
 						# Attempt connection to IMAP server
 						LOG.info('connecting to IMAP server - {0}'.format(host))
 						try:
-							server = imapclient.IMAPClient(host, use_uid=True, ssl=ssl)
+							server = imapclient.IMAPClient(host, use_uid=True, ssl=False)
 						except Exception:
 							# If connection attempt to IMAP server fails, retry
 							etype, evalue = sys.exc_info()[:2]
@@ -257,7 +257,8 @@ class ImapDaemon(object):
 								try:
 									self.api.send_alert(
 										resource=output['FROM'],
-										event=output['SUBJECT'],
+										event='{0} - {1}'.format(
+										each, output['SUBJECT']),
 										origin=folder,
 										severity='major',
 										environment='Mail',
@@ -270,16 +271,32 @@ class ImapDaemon(object):
 									)
 									LOG.info('Alert sent to alerta: %s')
 								except Exception as e:
-									LOG.warning('Failed to send alert: %s', e)
+									LOG.error('Failed to send alert: %s', e)
 							except Exception:
 								LOG.error('failed to process email {0}'.format(each))
 								raise
 								continue
+
+							# Attempt to logout from IMAP server
+						LOG.info('logging out from IMAP server - {0}'.format(username))
+						try:
+							response = server.logout()
+							LOG.info('logout successful - {0}'.format(response))
+						except Exception:
+							# Halt script when logout fails
+							etype, evalue = sys.exc_info()[:2]
+							estr = traceback.format_exception_only(etype, evalue)
+							logstr = 'failed to logout to IMAP server - '
+							for each in estr:
+								logstr += '{0}; '.format(each.strip('\n'))
+							LOG.critical(logstr)
+							break
 								
 						# End of IMAP server connection loop --->
 						break
 						
 					# End of configuration section --->
+					
 					break
 					LOG.info('script stopped ...')
 
