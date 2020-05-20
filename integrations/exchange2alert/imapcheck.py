@@ -23,7 +23,7 @@ LOG.addHandler(LOGging.StreamHandler())
 
 
 
-SERVER_THREAD_COUNT = 5
+SERVER_THREAD_COUNT = 20
 LOOP_EVERY = 30*60 #30 Minute loop
 
 imapclient = eventlet.import_patched('imapclient')
@@ -257,8 +257,7 @@ class ImapDaemon(object):
 								try:
 									self.api.send_alert(
 										resource=output['FROM'],
-										event='{0} - {1}'.format(
-										each, output['SUBJECT']),
+										event='{0} - {1}'.format(each, output['SUBJECT']),
 										origin=folder,
 										severity='major',
 										environment='Mail',
