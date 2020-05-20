@@ -119,7 +119,7 @@ class ImapDaemon(object):
 		# Create internal queue
 		self.queue = Queue.Queue()
 
-		self.api = Client('http://localhost:8080/api')
+		self.api = Client()
 
 		# Start worker threads
 		LOG.debug('Starting %s worker threads...', SERVER_THREAD_COUNT)
