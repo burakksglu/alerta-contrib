@@ -23,7 +23,7 @@ LOG.addHandler(LOGging.StreamHandler())
 
 
 
-SERVER_THREAD_COUNT = 5
+SERVER_THREAD_COUNT = 20
 LOOP_EVERY = 30*60 #30 Minute loop
 
 imapclient = eventlet.import_patched('imapclient')
@@ -119,7 +119,7 @@ class ImapDaemon(object):
 		# Create internal queue
 		self.queue = Queue.Queue()
 
-		self.api = Client()
+		self.api = Client('http://localhost:8080/api')
 
 		# Start worker threads
 		LOG.debug('Starting %s worker threads...', SERVER_THREAD_COUNT)
