@@ -23,7 +23,7 @@ LOG.addHandler(LOGging.StreamHandler())
 
 
 
-SERVER_THREAD_COUNT = 20
+SERVER_THREAD_COUNT = 5
 LOOP_EVERY = 30*60 #30 Minute loop
 
 imapclient = eventlet.import_patched('imapclient')
@@ -119,7 +119,7 @@ class ImapDaemon(object):
 		# Create internal queue
 		self.queue = Queue.Queue()
 
-		self.api = Client('http://localhost:8080/api')
+		self.api = Client('http://localhost:8080/api',key = os.getenv("ADMIN_KEY"))
 
 		# Start worker threads
 		LOG.debug('Starting %s worker threads...', SERVER_THREAD_COUNT)
@@ -257,7 +257,8 @@ class ImapDaemon(object):
 								try:
 									self.api.send_alert(
 										resource=output['FROM'],
-										event='{0} - {1}'.format(each, output['SUBJECT']),
+										event='Mail - {0}'.format(
+										each),
 										origin=folder,
 										severity='major',
 										environment='Mail',
