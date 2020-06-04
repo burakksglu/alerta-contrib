@@ -24,7 +24,9 @@ LOG.addHandler(LOGging.StreamHandler())
 
 
 SERVER_THREAD_COUNT = 5
-LOOP_EVERY = 30*60 #30 Minute loop
+IMAP_FREQ = int(os.getenv("IMAP_FREQ", 30))
+LOG.debug(IMAP_FREQ)
+LOOP_EVERY = 30* IMAP_FREQ #30 Minute loop
 
 imapclient = eventlet.import_patched('imapclient')
 
@@ -37,15 +39,18 @@ def decode_mime_words(s):
 def get_email_content(body):
 	item = dict()
 	if body.is_multipart():
-		item["%s" % "From".upper()] = decode_mime_words(body['From'][:255])
-		item["%s" % "To".upper()] = decode_mime_words(body['To'][:255])
-		item["%s" % "Subject".upper()] = decode_mime_words(body['Subject'][:255])
-		item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
+	item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
 		
 		for part in body.walk():
-			
 			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
-				if ('base64' in part.get('Content-Transfer-Encoding')):
+				if (part.get('Content-Transfer-Encoding') is not None and 'base64' in part.get('Content-Transfer-Encoding')):
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
+				else:
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = unidecode((item["%s" % "Body".upper()]))
+			elif (part.get_content_type() == 'text/plain') and (part.get('Content-Disposition') is None):
+				if (part.get('Content-Transfer-Encoding') is not None and 'base64' in part.get('Content-Transfer-Encoding')):
 					item["%s" % "Body".upper()] = str(part.get_payload())
 					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
 				else:
@@ -59,9 +64,15 @@ def get_email_content(body):
 		item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
 
 		for part in body.walk():
-			
 			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
-				if ('base64' in part.get('Content-Transfer-Encoding')):
+				if (part.get('Content-Transfer-Encoding') is not None and 'base64' in part.get('Content-Transfer-Encoding')):
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
+				else:
+					item["%s" % "Body".upper()] = str(part.get_payload())
+					item["%s" % "Body".upper()] = unidecode((item["%s" % "Body".upper()]))
+			elif (part.get_content_type() == 'text/plain') and (part.get('Content-Disposition') is None):
+				if (part.get('Content-Transfer-Encoding') is not None and 'base64' in part.get('Content-Transfer-Encoding')):
 					item["%s" % "Body".upper()] = str(part.get_payload())
 					item["%s" % "Body".upper()] = base64.b64decode((item["%s" % "Body".upper()])).decode()
 				else:
