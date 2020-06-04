@@ -39,7 +39,10 @@ def decode_mime_words(s):
 def get_email_content(body):
 	item = dict()
 	if body.is_multipart():
-	item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
+		item["%s" % "From".upper()] = decode_mime_words(body['From'][:255])
+		item["%s" % "To".upper()] = decode_mime_words(body['To'][:255])
+		item["%s" % "Subject".upper()] = decode_mime_words(body['Subject'][:255])
+		item["%s" % "Date".upper()] = decode_mime_words(body['Date'][:255])
 		
 		for part in body.walk():
 			if (part.get_content_type() == 'text/html') and (part.get('Content-Disposition') is None):
