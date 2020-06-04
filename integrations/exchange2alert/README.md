@@ -21,15 +21,16 @@ Configuration
 To enable the script simply set `IMAP_CHECK=True` in environment or export it.
 
 
-Add below listed environment variables to `alertad.conf` or export at start in the following format:
+Add below listed environment variables to `alertad.conf` or export at the start in the following format:
 
+ - IMAP_FREQ # Loop frequency.
  - IMAP_HOST
  - IMAP_USERNAME
  - IMAP_PASSWORD
- - IMAP_FOLDER 
+ - IMAP_FOLDER # Inbox folder to look for.
  - IMAP_SSL = YES # For SSL Connection, is not necessary for no-ssl.
 
 License
 -------
 
-Copyright (c) 2020 Burak Köseoğlu. Available under the MIT License.
+Copyright (c) 2020 Burak K�seo?lu. Available under the MIT License.
