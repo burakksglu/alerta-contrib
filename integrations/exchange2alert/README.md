@@ -14,7 +14,7 @@ Clone the GitHub repo and run:
 
 Or, to install remotely from GitHub run:
 
-    $ pip install git+https://github.com/burakksglu/alerta-contrib.git#subdirectory=integrations/exchange2alert
+    $ pip install git+https://github.com/alerta/alerta-contrib.git#subdirectory=integrations/exchange2alert
 
 Configuration
 -------------
@@ -23,7 +23,7 @@ To enable the script simply set `IMAP_CHECK=True` in environment or export it.
 
 Add below listed environment variables to `alertad.conf` or export at the start in the following format:
 
- - IMAP_FREQ # Loop frequency.
+ - IMAP_FREQ # Loop frequency (30 * IMAP_FREQ).
  - IMAP_HOST
  - IMAP_USERNAME
  - IMAP_PASSWORD
@@ -33,4 +33,4 @@ Add below listed environment variables to `alertad.conf` or export at the start 
 License
 -------
 
-Copyright (c) 2020 Burak Köseo?lu. Available under the MIT License.
+Copyright (c) 2020 Burak Köseoglu. Available under the MIT License.
