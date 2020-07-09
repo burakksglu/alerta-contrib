@@ -26,7 +26,7 @@ class OpenDistroWebhook(WebhookBase):
         attributes = {}
         origin = ''
         service=['OpenDistro Action']
-        value = ''{}
+        value = ''
 
         return Alert(
             resource=payload['resource'],
