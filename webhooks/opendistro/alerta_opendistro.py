@@ -22,11 +22,11 @@ class OpenDistroWebhook(WebhookBase):
         environment = 'Production'
         group ='OpenDistro'
         text = ''
-        tags = []
+        tags = ''
         attributes = {}
         origin = ''
         service='OpenDistro Action'
-        value = []
+        value = ''
 
         return Alert(
             resource=payload['resource'],
