@@ -17,7 +17,7 @@ setup(
     zip_safe=True,
     entry_points={
         'alerta.webhooks': [
-            'fail2ban = alerta_opendistro:OpenDistroWebhook'
+            'opendistro = alerta_opendistro:OpenDistroWebhook'
         ]
     }
 )
