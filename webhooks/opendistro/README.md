@@ -49,6 +49,19 @@ Headers:
     Content-Type: application/json
     X-API-Key: <Api Key>
 ```
+### Example Message on OpenDistro 
+--------------
+```
+{
+    "group": "<Group you'd like to set>",
+    "event": "{{ctx.monitor.name}}",
+    "resource": "<Resource you'd like to set>",
+    "severity": "{{ctx.trigger.severity}}",
+    "text": "Monitor {{ctx.monitor.name}} alarm test just entered alert status. Please investigate the issue.",
+    "origin": "<Origin you'd like to set>"
+}
+```
+
 
 License
 -------
